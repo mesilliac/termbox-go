@@ -204,6 +204,9 @@ loop:
 	for {
 		switch ev := termbox.PollEvent(); ev.Type {
 		case termbox.EventKey:
+			if ev.Ch == 'q' {
+				break loop
+			}
 			switch ev.Key {
 			case termbox.KeyEsc:
 				break loop
