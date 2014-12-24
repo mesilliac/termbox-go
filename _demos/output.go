@@ -1,6 +1,6 @@
 package main
 
-import "github.com/nsf/termbox-go"
+import ".."
 
 const chars = "nnnnnnnnnbbbbbbbbbuuuuuuuuuBBBBBBBBB"
 var output_mode = termbox.OutputNormal
