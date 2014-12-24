@@ -169,11 +169,17 @@ func draw_all() {
 	case termbox.OutputTrueColor:
 		for y := 0; y < 4; y++ {
 			for x := 0; x < 64; x++ {
-				c1 := termbox.Attribute(1 + y*64 + x)
+				var xx int
+				if y % 2 == 0 {
+					xx = x
+				} else {
+					xx = 63 - x
+				}
+				c1 := termbox.Attribute(1 + y*64 + xx)
 				termbox.SetCell(x, y, ' ', termbox.ColorDefault, c1)
-				c2 := termbox.Attribute(1 + (y*64 + x) << 8)
+				c2 := termbox.Attribute(1 + (y*64 + xx) << 8)
 				termbox.SetCell(x, y+4, ' ', termbox.ColorDefault, c2)
-				c3 := termbox.Attribute(1 + (y*64 + x) << 16)
+				c3 := termbox.Attribute(1 + (y*64 + xx) << 16)
 				termbox.SetCell(x, y+8, ' ', termbox.ColorDefault, c3)
 				c4 := c1 + c2 - 1
 				termbox.SetCell(x, y+12, 'n', c4, termbox.ColorDefault)
