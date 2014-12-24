@@ -166,6 +166,23 @@ func draw_all() {
 			}
 		}
 
+	case termbox.OutputTrueColor:
+		for y := 0; y < 4; y++ {
+			for x := 0; x < 64; x++ {
+				c1 := termbox.Attribute(1 + y*64 + x)
+				termbox.SetCell(x, y, ' ', termbox.ColorDefault, c1)
+				c2 := termbox.Attribute(1 + (y*64 + x) << 8)
+				termbox.SetCell(x, y+4, ' ', termbox.ColorDefault, c2)
+				c3 := termbox.Attribute(1 + (y*64 + x) << 16)
+				termbox.SetCell(x, y+8, ' ', termbox.ColorDefault, c3)
+				c4 := c1 + c2 - 1
+				termbox.SetCell(x, y+12, 'n', c4, termbox.ColorDefault)
+				c5 := c1 + c3 - 1
+				termbox.SetCell(x, y+16, 'n', c5, termbox.ColorDefault)
+				c6 := c2 + c3 - 1
+				termbox.SetCell(x, y+20, 'n', c6, termbox.ColorDefault)
+			}
+		}
 	}
 
 	termbox.Flush()
@@ -176,6 +193,7 @@ var available_modes = []termbox.OutputMode {
 	termbox.OutputGrayscale,
 	termbox.Output216,
 	termbox.Output256,
+	termbox.OutputTrueColor,
 }
 
 var output_mode_index = 0

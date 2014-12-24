@@ -83,6 +83,18 @@ func write_cursor(x, y int) {
 
 func write_sgr_fg(a Attribute) {
 	switch output_mode {
+	case OutputTrueColor:
+		u := uint64(a-1)
+		b := u & 0xFF
+		g := (u & 0xFF00) >> 8
+		r := (u & 0xFF0000) >> 16
+		outbuf.WriteString("\033[38;2;")
+		outbuf.Write(strconv.AppendUint(intbuf, r, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, g, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, b, 10))
+		outbuf.WriteString("m")
 	case Output256, Output216, OutputGrayscale:
 		outbuf.WriteString("\033[38;5;")
 		outbuf.Write(strconv.AppendUint(intbuf, uint64(a-1), 10))
@@ -96,6 +108,18 @@ func write_sgr_fg(a Attribute) {
 
 func write_sgr_bg(a Attribute) {
 	switch output_mode {
+	case OutputTrueColor:
+		u := uint64(a-1)
+		b := u & 0xFF
+		g := (u & 0xFF00) >> 8
+		r := (u & 0xFF0000) >> 16
+		outbuf.WriteString("\033[48;2;")
+		outbuf.Write(strconv.AppendUint(intbuf, r, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, g, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, b, 10))
+		outbuf.WriteString("m")
 	case Output256, Output216, OutputGrayscale:
 		outbuf.WriteString("\033[48;5;")
 		outbuf.Write(strconv.AppendUint(intbuf, uint64(a-1), 10))
@@ -109,6 +133,29 @@ func write_sgr_bg(a Attribute) {
 
 func write_sgr(fg, bg Attribute) {
 	switch output_mode {
+	case OutputTrueColor:
+		u := uint64(fg-1)
+		b := u & 0xFF
+		g := (u & 0xFF00) >> 8
+		r := (u & 0xFF0000) >> 16
+		outbuf.WriteString("\033[38;2;")
+		outbuf.Write(strconv.AppendUint(intbuf, r, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, g, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, b, 10))
+		outbuf.WriteString("m")
+		u = uint64(bg-1)
+		b = u & 0xFF
+		g = (u & 0xFF00) >> 8
+		r = (u & 0xFF0000) >> 16
+		outbuf.WriteString("\033[48;2;")
+		outbuf.Write(strconv.AppendUint(intbuf, r, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, g, 10))
+		outbuf.WriteString(";")
+		outbuf.Write(strconv.AppendUint(intbuf, b, 10))
+		outbuf.WriteString("m")
 	case Output256, Output216, OutputGrayscale:
 		outbuf.WriteString("\033[38;5;")
 		outbuf.Write(strconv.AppendUint(intbuf, uint64(fg-1), 10))
@@ -149,6 +196,9 @@ func send_attr(fg, bg Attribute) {
 	var fgcol, bgcol Attribute
 
 	switch output_mode {
+	case OutputTrueColor:
+		fgcol = fg & 0x1FFFFFF
+		bgcol = bg & 0x1FFFFFF
 	case Output256:
 		fgcol = fg & 0x1FF
 		bgcol = bg & 0x1FF

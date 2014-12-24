@@ -9,7 +9,7 @@ type (
 	EventType  uint8
 	Modifier   uint8
 	Key        uint16
-	Attribute  uint16
+	Attribute  uint32
 )
 
 // This type represents a termbox event. The 'Mod', 'Key' and 'Ch' fields are
@@ -148,7 +148,7 @@ const (
 // terminals applying AttrBold to background may result in blinking text. Use
 // them with caution and test your code on various terminals.
 const (
-	AttrBold Attribute = 1 << (iota + 9)
+	AttrBold Attribute = 1 << (iota + 25)
 	AttrUnderline
 	AttrReverse
 )
@@ -168,6 +168,7 @@ const (
 	Output256
 	Output216
 	OutputGrayscale
+	OutputTrueColor
 )
 
 // Event type. See Event.Type field.
